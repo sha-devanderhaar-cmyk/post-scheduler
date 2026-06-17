@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PostLux — Social Scheduler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 300;
+      color: #ffffff;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+
+    .header h1 span {
+      color: #c9a84c;
+    }
+
+    .header p {
+      font-size: 12px;
+      color: #666;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    /* ── Main Layout ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #111111;
+      border: 1px solid #1e1e1e;
+      border-radius: 12px;
+      padding: 30px;
+    }
+
+    .card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: #c9a84c;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    /* ── Form Elements ── */
+    label {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      color: #666;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #222;
+      border-radius: 6px;
+      color: #e0e0e0;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #c9a84c;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #333;
+    }
+
+    /* ── Platform Pills ── */
+    .platforms {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .platform-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid #222;
+      background: #0a0a0a;
+      color: #666;
+      font-size: 11px;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+
+    .platform-pill:hover {
+      border-color: #c9a84c;
+      color: #c9a84c;
+    }
+
+    .platform-pill.active {
+      background: #c9a84c;
+      border-color: #c9a84c;
+      color: #0a0a0a;
+      font-weight: 500;
+    }
+
+    /* ── Character Counter ── */
+    .char-counter {
+      text-align: right;
+      font-size: 11px;
+      color: #444;
+      margin-top: -16px;
+      margin-bottom: 20px;
+    }
+
+    .char-counter.warning { color: #cc8800; }
+    .char-counter.danger { color: #cc4444; }
+
+    /* ── Button ── */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #c9a84c, #a07830);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+
+    /* ── Preview ── */
+    .preview-box {
+      background: #0a0a0a;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 150px;
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+    }
+
+    .preview-platform {
+      font-size: 10px;
+      color: #c9a84c;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .preview-date {
+      font-size: 11px;
+      color: #444;
+      margin-top: 12px;
+    }
+
+    /* ── Scheduled Posts ── */
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .post-item {
+      background: #0a0a0a;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .post-item-content {
+      flex: 1;
+    }
+
+    .post-item-platform {
+      font-size: 10px;
+      color: #c9a84c;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .post-item-text {
+      font-size: 13px;
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .post-item-date {
+      font-size: 11px;
+      color: #444;
+    }
+
+    .post-item-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-small {
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid #222;
+      background: transparent;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .btn-small:hover {
+      border-color: #cc4444;
+      color: #cc4444;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #333;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    /* ── Stats Bar ── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      color: #c9a84c;
+      font-weight: 300;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: #444;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Post<span>Lux</span></h1>
+    <p>Your personal social scheduler</p>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-number" id="totalPosts">0</div>
+      <div class="stat-label">Scheduled</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" id="totalPlatforms">0</div>
+      <div class="stat-label">Platforms</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" id="nextPostTime">—</div>
+      <div class="stat-label">Next Post</div>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="container">
+
+    <!-- Compose Card -->
+    <div class="card">
+      <h2>Compose</h2>
+
+      <label>Platform</label>
+      <div class="platforms">
+        <button class="platform-pill" onclick="togglePlatform(this)">Twitter / X</button>
+        <button class="platform-pill" onclick="togglePlatform(this)">LinkedIn</button>
+        <button class="platform-pill" onclick="togglePlatform(this)">Reddit</button>
+        <button class="platform-pill" onclick="togglePlatform(this)">Bluesky</button>
+      </div>
+
+      <label>Your Post</label>
+      <textarea id="postContent" placeholder="Write something luxurious..." oninput="updatePreview(); updateCharCount()"></textarea>
+      <div class="char-counter" id="charCounter">0 / 280</div>
+
+      <label>Schedule Date & Time</label>
+      <input type="datetime-local" id="scheduleTime" oninput="updatePreview()">
+
+      <button class="btn" onclick="schedulePost()">Schedule Post</button>
+    </div>
+
+    <!-- Preview Card -->
+    <div class="card">
+      <h2>Preview</h2>
+      <div class="preview-platform" id="previewPlatform">— Select a platform —</div>
+      <div class="preview-box" id="previewBox">Your post will appear here as you type...</div>
+      <div class="preview-date" id="previewDate">📅 No date selected</div>
+    </div>
+
+    <!-- Scheduled Posts -->
+    <div class="card full-width">
+      <h2>Scheduled Posts</h2>
+      <div id="scheduledList">
+        <div class="empty-state">No posts scheduled yet. Compose your first post above.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let selectedPlatforms = [];
+    let scheduledPosts = [];
+
+    // Toggle platform selection
+    function togglePlatform(btn) {
+      const platform = btn.textContent;
+      if (btn.classList.contains('active')) {
+        btn.classList.remove('active');
+        selectedPlatforms = selectedPlatforms.filter(p => p !== platform);
+      } else {
+        btn.classList.add('active');
+        selectedPlatforms.push(platform);
+      }
+      updatePreview();
+      updateStats();
+    }
+
+    // Update live preview
+    function updatePreview() {
+      const content = document.getElementById('postContent').value;
+      const time = document.getElementById('scheduleTime').value;
+
+      document.getElementById('previewBox').textContent =
+        content || 'Your post will appear here as you type...';
+
+      document.getElementById('previewPlatform').textContent =
+        selectedPlatforms.length > 0
+          ? selectedPlatforms.join(' · ')
+          : '— Select a platform —';
+
+      document.getElementById('previewDate').textContent =
+        time ? `📅 ${new Date(time).toLocaleString()}` : '📅 No date selected';
+    }
+
+    // Character counter
+    function updateCharCount() {
+      const content = document.getElementById('postContent').value;
+      const count = content.length;
+      const counter = document.getElementById('charCounter');
+      counter.textContent = `${count} / 280`;
+      counter.className = 'char-counter';
+      if (count > 250) counter.classList.add('warning');
+      if (count > 280) counter.classList.add('danger');
+    }
+
+    // Schedule a post
+    function schedulePost() {
+      const content = document.getElementById('postContent').value;
+      const time = document.getElementById('scheduleTime').value;
+
+      if (!content) {
+        alert('Please write something first!');
+        return;
+      }
+      if (selectedPlatforms.length === 0) {
+        alert('Please select at least one platform!');
+        return;
+      }
+      if (!time) {
+        alert('Please select a date and time!');
+        return;
+      }
+
+      const post = {
+        id: Date.now(),
+        content,
+        platforms: [...selectedPlatforms],
+        time: new Date(time)
+      };
+
+      scheduledPosts.push(post);
+      scheduledPosts.sort((a, b) => a.time - b.time);
+
+      renderPosts();
+      updateStats();
+      clearForm();
+    }
+
+    // Render scheduled posts
+    function renderPosts() {
+      const list = document.getElementById('scheduledList');
+
+      if (scheduledPosts.length === 0) {
+        list.innerHTML = '<div class="empty-state">No posts scheduled yet. Compose your first post above.</div>';
+        return;
+      }
+
+      list.innerHTML = scheduledPosts.map(post => `
+        <div class="post-item" id="post-${post.id}">
+          <div class="post-item-content">
+            <div class="post-item-platform">${post.platforms.join(' · ')}</div>
+            <div class="post-item-text">${post.content}</div>
+            <div class="post-item-date">📅 ${post.time.toLocaleString()}</div>
+          </div>
+          <div class="post-item-actions">
+            <button class="btn-small" onclick="deletePost(${post.id})">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Delete a post
+    function deletePost(id) {
+      scheduledPosts = scheduledPosts.filter(p => p.id !== id);
+      renderPosts();
+      updateStats();
+    }
+
+    // Update stats bar
+    function updateStats() {
+      document.getElementById('totalPosts').textContent = scheduledPosts.length;
+
+      const platforms = new Set(scheduledPosts.flatMap(p => p.platforms));
+      document.getElementById('totalPlatforms').textContent = platforms.size;
+
+      if (scheduledPosts.length > 0) {
+        const next = scheduledPosts[0].time;
+        const hours = next.getHours().toString().padStart(2, '0');
+        const mins = next.getMinutes().toString().padStart(2, '0');
+        document.getElementById('nextPostTime').textContent = `${hours}:${mins}`;
+      } else {
+        document.getElementById('nextPostTime').textContent = '—';
+      }
+    }
+
+    // Clear form after scheduling
+    function clearForm() {
+      document.getElementById('postContent').value = '';
+      document.getElementById('scheduleTime').value = '';
+      document.getElementById('charCounter').textContent = '0 / 280';
+      selectedPlatforms = [];
+      document.querySelectorAll('.platform-pill').forEach(p => p.classList.remove('active'));
+      updatePreview();
+    }
+  </script>
+
+</body>
+</html>
