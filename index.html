@@ -4,228 +4,351 @@
   <meta charset="UTF-8">
   <title>PostLux — Social Scheduler</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #0a0a0a;
-      color: #e0e0e0;
+      background-color: #ffffff;
+      color: #111111;
       min-height: 100vh;
       padding: 40px 20px;
     }
 
-    /* ── Header ── */
-    .header {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
+    .header { text-align: center; margin-bottom: 50px; }
     .header h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 48px;
+      font-size: 52px;
       font-weight: 300;
-      color: #ffffff;
-      letter-spacing: 6px;
+      color: #111111;
+      letter-spacing: 8px;
       text-transform: uppercase;
     }
-
-    .header h1 span {
-      color: #c9a84c;
-    }
-
+    .header h1 span { color: #c9a84c; }
     .header p {
-      font-size: 12px;
-      color: #666;
-      letter-spacing: 3px;
+      font-size: 11px;
+      color: #999;
+      letter-spacing: 4px;
       text-transform: uppercase;
       margin-top: 8px;
     }
 
-    /* ── Main Layout ── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      margin-bottom: 50px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .stat { text-align: center; }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      color: #c9a84c;
+      font-weight: 300;
+    }
+    .stat-label {
+      font-size: 10px;
+      color: #aaa;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 30px;
     }
 
-    /* ── Card ── */
     .card {
-      background: #111111;
-      border: 1px solid #1e1e1e;
-      border-radius: 12px;
-      padding: 30px;
+      background: #ffffff;
+      border: 1px solid #f0f0f0;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.04);
     }
-
     .card h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 400;
-      color: #c9a84c;
-      letter-spacing: 2px;
+      color: #111;
+      letter-spacing: 3px;
       text-transform: uppercase;
       margin-bottom: 24px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #1e1e1e;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f0f0f0;
     }
 
-    /* ── Form Elements ── */
     label {
       display: block;
       font-size: 10px;
       font-weight: 500;
-      color: #666;
+      color: #aaa;
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     input, textarea, select {
       width: 100%;
-      background: #0a0a0a;
-      border: 1px solid #222;
-      border-radius: 6px;
-      color: #e0e0e0;
+      background: #fafafa;
+      border: 1px solid #eeeeee;
+      border-radius: 8px;
+      color: #111;
       font-family: 'Poppins', sans-serif;
       font-size: 13px;
-      padding: 12px 14px;
+      padding: 12px 16px;
       margin-bottom: 20px;
       transition: border-color 0.2s;
     }
-
     input:focus, textarea:focus, select:focus {
       outline: none;
       border-color: #c9a84c;
     }
+    textarea { resize: vertical; min-height: 120px; }
+    input::placeholder, textarea::placeholder { color: #ccc; }
 
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: #333;
-    }
-
-    /* ── Platform Pills ── */
     .platforms {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
-
     .platform-pill {
-      padding: 6px 14px;
+      padding: 7px 14px;
       border-radius: 20px;
-      border: 1px solid #222;
-      background: #0a0a0a;
-      color: #666;
+      border: 1px solid #e0e0e0;
+      background: #fff;
+      color: #999;
       font-size: 11px;
       font-family: 'Poppins', sans-serif;
       cursor: pointer;
       letter-spacing: 1px;
       transition: all 0.2s;
     }
-
-    .platform-pill:hover {
-      border-color: #c9a84c;
-      color: #c9a84c;
-    }
-
+    .platform-pill:hover { border-color: #c9a84c; color: #c9a84c; }
     .platform-pill.active {
       background: #c9a84c;
       border-color: #c9a84c;
-      color: #0a0a0a;
+      color: #ffffff;
       font-weight: 500;
     }
 
-    /* ── Character Counter ── */
     .char-counter {
       text-align: right;
       font-size: 11px;
-      color: #444;
+      color: #ccc;
       margin-top: -16px;
       margin-bottom: 20px;
     }
-
     .char-counter.warning { color: #cc8800; }
     .char-counter.danger { color: #cc4444; }
 
-    /* ── Button ── */
+    .upload-area {
+      border: 2px dashed #e8e8e8;
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .upload-area:hover { border-color: #c9a84c; background: #fffdf5; }
+    .upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: none;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-icon { font-size: 28px; margin-bottom: 8px; }
+    .upload-text { font-size: 12px; color: #bbb; letter-spacing: 1px; }
+    .upload-text span { color: #c9a84c; font-weight: 500; }
+
+    .media-preview {
+      margin-bottom: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+      position: relative;
+    }
+    .media-preview img, .media-preview video {
+      width: 100%;
+      border-radius: 10px;
+      max-height: 400px;
+      object-fit: contain;
+      background: #f5f5f5;
+    }
+    .remove-media {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
     .btn {
       width: 100%;
       padding: 14px;
       background: linear-gradient(135deg, #c9a84c, #a07830);
-      color: #0a0a0a;
+      color: #ffffff;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-family: 'Poppins', sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
       transition: opacity 0.2s;
     }
-
     .btn:hover { opacity: 0.85; }
-
-    /* ── Preview ── */
-    .preview-box {
-      background: #0a0a0a;
-      border: 1px solid #1e1e1e;
-      border-radius: 8px;
-      padding: 20px;
-      min-height: 150px;
-      font-size: 14px;
-      color: #aaa;
-      line-height: 1.7;
-      margin-bottom: 20px;
-      white-space: pre-wrap;
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #c9a84c;
+      color: #c9a84c;
     }
+    .btn-outline:hover { background: #fffdf5; opacity: 1; }
 
-    .preview-platform {
-      font-size: 10px;
+    /* ── Phone Mockup ── */
+    .phone-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
+    .phone-frame {
+      width: 260px;
+      background: #111;
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 0 0 2px #333, 0 20px 60px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .phone-notch {
+      width: 80px;
+      height: 20px;
+      background: #111;
+      border-radius: 0 0 14px 14px;
+      margin: 0 auto 8px auto;
+      position: relative;
+      z-index: 2;
+    }
+    .phone-screen {
+      background: #ffffff;
+      border-radius: 30px;
+      padding: 16px;
+      min-height: 420px;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+    .phone-platform {
+      font-size: 9px;
       color: #c9a84c;
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
     }
-
-    .preview-date {
+    .phone-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .phone-avatar {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #c9a84c, #a07830);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .phone-name { font-size: 11px; font-weight: 600; color: #111; }
+    .phone-handle { font-size: 10px; color: #aaa; }
+    .phone-content {
+      font-size: 12px;
+      color: #333;
+      line-height: 1.7;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .phone-media {
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .phone-media img, .phone-media video {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: contain;
+      background: #f5f5f5;
+      max-height: 280px;
+    }
+    .phone-date { font-size: 9px; color: #ccc; margin-bottom: 12px; letter-spacing: 1px; }
+    .phone-actions {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f0;
       font-size: 11px;
-      color: #444;
-      margin-top: 12px;
+      color: #aaa;
+    }
+    .phone-home-bar {
+      width: 80px;
+      height: 4px;
+      background: #333;
+      border-radius: 2px;
+      margin: 10px auto 0 auto;
     }
 
     /* ── Scheduled Posts ── */
-    .full-width {
-      grid-column: 1 / -1;
-    }
-
+    .full-width { grid-column: 1 / -1; }
     .post-item {
-      background: #0a0a0a;
-      border: 1px solid #1e1e1e;
-      border-radius: 8px;
-      padding: 16px 20px;
+      background: #fafafa;
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      padding: 18px 22px;
       margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 20px;
+      transition: box-shadow 0.2s;
     }
-
-    .post-item-content {
-      flex: 1;
-    }
-
+    .post-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
     .post-item-platform {
       font-size: 10px;
       color: #c9a84c;
@@ -233,78 +356,66 @@
       text-transform: uppercase;
       margin-bottom: 6px;
     }
-
-    .post-item-text {
-      font-size: 13px;
-      color: #ccc;
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
-
-    .post-item-date {
-      font-size: 11px;
-      color: #444;
-    }
-
-    .post-item-actions {
-      display: flex;
-      gap: 8px;
+    .post-item-text { font-size: 13px; color: #444; line-height: 1.6; margin-bottom: 6px; }
+    .post-item-date { font-size: 11px; color: #bbb; }
+    .post-item-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
       flex-shrink: 0;
     }
-
+    .post-now-badge {
+      display: inline-block;
+      background: #111;
+      color: #fff;
+      font-size: 9px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 1px;
+      margin-left: 8px;
+      text-transform: uppercase;
+    }
     .btn-small {
       padding: 6px 14px;
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 10px;
       font-family: 'Poppins', sans-serif;
       font-weight: 500;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
-      border: 1px solid #222;
+      border: 1px solid #eee;
       background: transparent;
-      color: #666;
+      color: #bbb;
       transition: all 0.2s;
     }
-
-    .btn-small:hover {
-      border-color: #cc4444;
-      color: #cc4444;
-    }
-
+    .btn-small:hover { border-color: #cc4444; color: #cc4444; }
     .empty-state {
       text-align: center;
-      padding: 40px;
-      color: #333;
+      padding: 50px;
+      color: #ddd;
       font-size: 13px;
-      letter-spacing: 1px;
-    }
-
-    /* ── Stats Bar ── */
-    .stats-bar {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-
-    .stat {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 36px;
-      color: #c9a84c;
-      font-weight: 300;
-    }
-
-    .stat-label {
-      font-size: 10px;
-      color: #444;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
+
+    /* ── Flatpickr Gold Theme ── */
+    .flatpickr-calendar {
+      border-radius: 12px !important;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12) !important;
+      border: 1px solid #f0f0f0 !important;
+      font-family: 'Poppins', sans-serif !important;
+    }
+    .flatpickr-day.selected,
+    .flatpickr-day.selected:hover {
+      background: #c9a84c !important;
+      border-color: #c9a84c !important;
+    }
+    .flatpickr-day:hover { background: #fffdf5 !important; }
+    .flatpickr-months .flatpickr-month { color: #111 !important; }
+    .flatpickr-current-month .flatpickr-monthDropdown-months,
+    .flatpickr-current-month input.cur-year { color: #111 !important; }
   </style>
 </head>
 <body>
@@ -338,47 +449,97 @@
     <div class="card">
       <h2>Compose</h2>
 
-      <label>Platform</label>
+      <label>Platforms</label>
       <div class="platforms">
-        <button class="platform-pill" onclick="togglePlatform(this)">Twitter / X</button>
         <button class="platform-pill" onclick="togglePlatform(this)">LinkedIn</button>
-        <button class="platform-pill" onclick="togglePlatform(this)">Reddit</button>
-        <button class="platform-pill" onclick="togglePlatform(this)">Bluesky</button>
+        <button class="platform-pill" onclick="togglePlatform(this)">X</button>
+        <button class="platform-pill" onclick="togglePlatform(this)">Facebook</button>
+        <button class="platform-pill" onclick="togglePlatform(this)">Instagram</button>
+        <button class="platform-pill" onclick="togglePlatform(this)">TikTok</button>
+        <button class="platform-pill" onclick="togglePlatform(this)">YouTube Shorts</button>
       </div>
 
       <label>Your Post</label>
-      <textarea id="postContent" placeholder="Write something luxurious..." oninput="updatePreview(); updateCharCount()"></textarea>
+      <textarea id="postContent" placeholder="Write something worth sharing..." oninput="updatePreview(); updateCharCount()"></textarea>
       <div class="char-counter" id="charCounter">0 / 280</div>
 
-      <label>Schedule Date & Time</label>
-      <input type="datetime-local" id="scheduleTime" oninput="updatePreview()">
+      <label>Media — Image or Video</label>
+      <div class="media-preview" id="mediaPreview">
+        <button class="remove-media" onclick="removeMedia()">✕</button>
+        <img id="previewImg" src="" alt="" style="display:none">
+        <video id="previewVid" controls style="display:none"></video>
+      </div>
+      <div class="upload-area" id="uploadArea">
+        <input type="file" accept="image/*,video/*" onchange="handleMedia(event)">
+        <div class="upload-icon">🖼️</div>
+        <div class="upload-text">Drop your file here or <span>browse</span></div>
+      </div>
 
-      <button class="btn" onclick="schedulePost()">Schedule Post</button>
+      <label>Schedule Date & Time</label>
+      <input type="text" id="scheduleTime" placeholder="Pick a date and time..." readonly>
+
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="postNow()">Post Now</button>
+        <button class="btn" onclick="schedulePost()">Schedule Post</button>
+      </div>
     </div>
 
     <!-- Preview Card -->
     <div class="card">
       <h2>Preview</h2>
-      <div class="preview-platform" id="previewPlatform">— Select a platform —</div>
-      <div class="preview-box" id="previewBox">Your post will appear here as you type...</div>
-      <div class="preview-date" id="previewDate">📅 No date selected</div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-platform" id="previewPlatform">— Select a platform —</div>
+            <div class="phone-author">
+              <div class="phone-avatar">P</div>
+              <div>
+                <div class="phone-name">PostLux User</div>
+                <div class="phone-handle">@postlux</div>
+              </div>
+            </div>
+            <div class="phone-content" id="previewBox">Your post will appear here as you type...</div>
+            <div class="phone-media" id="previewMediaBox"></div>
+            <div class="phone-date" id="previewDate">📅 No date selected</div>
+            <div class="phone-actions">
+              <span>❤️ 0</span>
+              <span>💬 0</span>
+              <span>🔁 0</span>
+              <span>📤</span>
+            </div>
+          </div>
+          <div class="phone-home-bar"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Scheduled Posts -->
     <div class="card full-width">
       <h2>Scheduled Posts</h2>
       <div id="scheduledList">
-        <div class="empty-state">No posts scheduled yet. Compose your first post above.</div>
+        <div class="empty-state">No posts scheduled yet</div>
       </div>
     </div>
 
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
   <script>
     let selectedPlatforms = [];
     let scheduledPosts = [];
+    let mediaDataURL = null;
+    let mediaType = null;
 
-    // Toggle platform selection
+    flatpickr("#scheduleTime", {
+      enableTime: true,
+      dateFormat: "D, d M Y — h:i K",
+      minDate: "today",
+      minuteIncrement: 5,
+      time_24hr: false,
+      onChange: updatePreview
+    });
+
     function togglePlatform(btn) {
       const platform = btn.textContent;
       if (btn.classList.contains('active')) {
@@ -392,7 +553,6 @@
       updateStats();
     }
 
-    // Update live preview
     function updatePreview() {
       const content = document.getElementById('postContent').value;
       const time = document.getElementById('scheduleTime').value;
@@ -406,13 +566,24 @@
           : '— Select a platform —';
 
       document.getElementById('previewDate').textContent =
-        time ? `📅 ${new Date(time).toLocaleString()}` : '📅 No date selected';
+        time ? `📅 ${time}` : '📅 No date selected';
+
+      const previewMediaBox = document.getElementById('previewMediaBox');
+      if (mediaDataURL) {
+        previewMediaBox.style.display = 'block';
+        if (mediaType === 'image') {
+          previewMediaBox.innerHTML = `<img src="${mediaDataURL}" style="width:100%;border-radius:12px;object-fit:contain;background:#f5f5f5;max-height:280px;">`;
+        } else {
+          previewMediaBox.innerHTML = `<video src="${mediaDataURL}" controls style="width:100%;border-radius:12px;object-fit:contain;background:#f5f5f5;max-height:280px;"></video>`;
+        }
+      } else {
+        previewMediaBox.style.display = 'none';
+        previewMediaBox.innerHTML = '';
+      }
     }
 
-    // Character counter
     function updateCharCount() {
-      const content = document.getElementById('postContent').value;
-      const count = content.length;
+      const count = document.getElementById('postContent').value.length;
       const counter = document.getElementById('charCounter');
       counter.textContent = `${count} / 280`;
       counter.className = 'char-counter';
@@ -420,78 +591,136 @@
       if (count > 280) counter.classList.add('danger');
     }
 
-    // Schedule a post
-    function schedulePost() {
-      const content = document.getElementById('postContent').value;
-      const time = document.getElementById('scheduleTime').value;
+    function handleMedia(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-      if (!content) {
-        alert('Please write something first!');
-        return;
-      }
-      if (selectedPlatforms.length === 0) {
-        alert('Please select at least one platform!');
-        return;
-      }
-      if (!time) {
-        alert('Please select a date and time!');
-        return;
-      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        mediaDataURL = e.target.result;
+        mediaType = file.type.startsWith('image') ? 'image' : 'video';
+
+        const preview = document.getElementById('mediaPreview');
+        const img = document.getElementById('previewImg');
+        const vid = document.getElementById('previewVid');
+
+        preview.style.display = 'block';
+        document.getElementById('uploadArea').style.display = 'none';
+
+        if (mediaType === 'image') {
+          img.src = mediaDataURL;
+          img.style.display = 'block';
+          vid.style.display = 'none';
+        } else {
+          vid.src = mediaDataURL;
+          vid.style.display = 'block';
+          img.style.display = 'none';
+        }
+        updatePreview();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeMedia() {
+      mediaDataURL = null;
+      mediaType = null;
+      document.getElementById('mediaPreview').style.display = 'none';
+      document.getElementById('uploadArea').style.display = 'block';
+      document.getElementById('previewImg').src = '';
+      document.getElementById('previewVid').src = '';
+      updatePreview();
+    }
+
+    function validateForm() {
+      const content = document.getElementById('postContent').value;
+      if (!content) { alert('Please write something first!'); return false; }
+      if (selectedPlatforms.length === 0) { alert('Please select at least one platform!'); return false; }
+      return true;
+    }
+
+    function postNow() {
+      if (!validateForm()) return;
+      const content = document.getElementById('postContent').value;
 
       const post = {
         id: Date.now(),
         content,
         platforms: [...selectedPlatforms],
-        time: new Date(time)
+        time: new Date(),
+        media: mediaDataURL,
+        mediaType,
+        isNow: true
       };
 
-      scheduledPosts.push(post);
-      scheduledPosts.sort((a, b) => a.time - b.time);
-
+      scheduledPosts.unshift(post);
       renderPosts();
       updateStats();
       clearForm();
     }
 
-    // Render scheduled posts
+    function schedulePost() {
+      if (!validateForm()) return;
+      const time = document.getElementById('scheduleTime').value;
+      if (!time) { alert('Please select a date and time!'); return; }
+
+      const content = document.getElementById('postContent').value;
+
+      const post = {
+        id: Date.now(),
+        content,
+        platforms: [...selectedPlatforms],
+        time: new Date(document.querySelector('#scheduleTime')._flatpickr.selectedDates[0]),
+        media: mediaDataURL,
+        mediaType,
+        isNow: false
+      };
+
+      scheduledPosts.push(post);
+      scheduledPosts.sort((a, b) => a.time - b.time);
+      renderPosts();
+      updateStats();
+      clearForm();
+    }
+
     function renderPosts() {
       const list = document.getElementById('scheduledList');
-
       if (scheduledPosts.length === 0) {
-        list.innerHTML = '<div class="empty-state">No posts scheduled yet. Compose your first post above.</div>';
+        list.innerHTML = '<div class="empty-state">No posts scheduled yet</div>';
         return;
       }
 
       list.innerHTML = scheduledPosts.map(post => `
         <div class="post-item" id="post-${post.id}">
-          <div class="post-item-content">
-            <div class="post-item-platform">${post.platforms.join(' · ')}</div>
+          <div class="post-item-content" style="flex:1">
+            <div class="post-item-platform">
+              ${post.platforms.join(' · ')}
+              ${post.isNow ? '<span class="post-now-badge">Posted Now</span>' : ''}
+            </div>
             <div class="post-item-text">${post.content}</div>
-            <div class="post-item-date">📅 ${post.time.toLocaleString()}</div>
+            <div class="post-item-date">📅 ${post.isNow ? 'Posted immediately' : post.time.toLocaleString()}</div>
           </div>
-          <div class="post-item-actions">
+          ${post.media ? `<img class="post-item-thumb" src="${post.media}" alt="media">` : ''}
+          <div>
             <button class="btn-small" onclick="deletePost(${post.id})">Delete</button>
           </div>
         </div>
       `).join('');
     }
 
-    // Delete a post
     function deletePost(id) {
       scheduledPosts = scheduledPosts.filter(p => p.id !== id);
       renderPosts();
       updateStats();
     }
 
-    // Update stats bar
     function updateStats() {
       document.getElementById('totalPosts').textContent = scheduledPosts.length;
-
       const platforms = new Set(scheduledPosts.flatMap(p => p.platforms));
       document.getElementById('totalPlatforms').textContent = platforms.size;
 
-      if (scheduledPosts.length > 0) {
-        const next = scheduledPosts[0].time;
+      const future = scheduledPosts.filter(p => !p.isNow);
+      if (future.length > 0) {
+        const next = future[0].time;
         const hours = next.getHours().toString().padStart(2, '0');
         const mins = next.getMinutes().toString().padStart(2, '0');
         document.getElementById('nextPostTime').textContent = `${hours}:${mins}`;
@@ -500,13 +729,13 @@
       }
     }
 
-    // Clear form after scheduling
     function clearForm() {
       document.getElementById('postContent').value = '';
-      document.getElementById('scheduleTime').value = '';
       document.getElementById('charCounter').textContent = '0 / 280';
       selectedPlatforms = [];
       document.querySelectorAll('.platform-pill').forEach(p => p.classList.remove('active'));
+      document.querySelector('#scheduleTime')._flatpickr.clear();
+      removeMedia();
       updatePreview();
     }
   </script>
