@@ -309,47 +309,132 @@
       opacity: 1;
     }
 
-    /* ── Preview Card ── */
-    .preview-platform {
-      font-size: 10px;
+    /* ── Phone Mockup ── */
+    .phone-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    .phone-frame {
+      width: 260px;
+      background: #111;
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow:
+        0 0 0 2px #333,
+        0 20px 60px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .phone-notch {
+      width: 80px;
+      height: 20px;
+      background: #111;
+      border-radius: 0 0 14px 14px;
+      margin: 0 auto 8px auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .phone-screen {
+      background: #ffffff;
+      border-radius: 30px;
+      padding: 16px;
+      min-height: 420px;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .phone-platform {
+      font-size: 9px;
       color: #c9a84c;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
+      margin-bottom: 12px;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .phone-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 10px;
     }
 
-    .preview-box {
-      background: #fafafa;
-      border: 1px solid #f0f0f0;
-      border-radius: 10px;
-      padding: 20px;
-      min-height: 120px;
-      font-size: 14px;
-      color: #555;
-      line-height: 1.8;
-      margin-bottom: 16px;
-      white-space: pre-wrap;
+    .phone-avatar {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #c9a84c, #a07830);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
     }
 
-    .preview-media {
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 16px;
-      display: none;
-    }
-
-    .preview-media img, .preview-media video {
-  width: 100%;
-  border-radius: 10px;
-  max-height: 350px;
-  object-fit: contain;
-  background: #f5f5f5;
-}
-
-    .preview-date {
+    .phone-name {
       font-size: 11px;
-      color: #bbb;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .phone-handle {
+      font-size: 10px;
+      color: #aaa;
+    }
+
+    .phone-content {
+      font-size: 12px;
+      color: #333;
+      line-height: 1.7;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .phone-media {
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .phone-media img,
+    .phone-media video {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: contain;
+      background: #f5f5f5;
+      max-height: 280px;
+    }
+
+    .phone-date {
+      font-size: 9px;
+      color: #ccc;
+      margin-bottom: 12px;
       letter-spacing: 1px;
+    }
+
+    .phone-actions {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f0;
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    .phone-home-bar {
+      width: 80px;
+      height: 4px;
+      background: #333;
+      border-radius: 2px;
+      margin: 10px auto 0 auto;
     }
 
     /* ── Scheduled Posts ── */
@@ -538,10 +623,47 @@
     <!-- Preview Card -->
     <div class="card">
       <h2>Preview</h2>
-      <div class="preview-platform" id="previewPlatform">— Select a platform —</div>
-      <div class="preview-box" id="previewBox">Your post will appear here as you type...</div>
-      <div class="preview-media" id="previewMediaBox"></div>
-      <div class="preview-date" id="previewDate">📅 No date selected</div>
+
+      <!-- Phone Mockup -->
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+
+            <!-- Platform Header -->
+            <div class="phone-platform" id="previewPlatform">— Select a platform —</div>
+
+            <!-- Post Author Row -->
+            <div class="phone-author">
+              <div class="phone-avatar">P</div>
+              <div>
+                <div class="phone-name">PostLux User</div>
+                <div class="phone-handle">@postlux</div>
+              </div>
+            </div>
+
+            <!-- Post Content -->
+            <div class="phone-content" id="previewBox">Your post will appear here as you type...</div>
+
+            <!-- Media -->
+            <div class="phone-media" id="previewMediaBox"></div>
+
+            <!-- Date -->
+            <div class="phone-date" id="previewDate">📅 No date selected</div>
+
+            <!-- Engagement Row -->
+            <div class="phone-actions">
+              <span>❤️ 0</span>
+              <span>💬 0</span>
+              <span>🔁 0</span>
+              <span>📤</span>
+            </div>
+
+          </div>
+          <div class="phone-home-bar"></div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Scheduled Posts -->
